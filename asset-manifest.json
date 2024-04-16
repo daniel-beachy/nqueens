@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/portfolio/static/css/main.e6c13ad2.css",
-    "main.js": "/portfolio/static/js/main.fa66f095.js",
+    "main.js": "/portfolio/static/js/main.ddad360b.js",
     "static/media/queen-black.png": "/portfolio/static/media/queen-black.91645c65415445eef0a7.png",
     "index.html": "/portfolio/index.html",
     "main.e6c13ad2.css.map": "/portfolio/static/css/main.e6c13ad2.css.map",
-    "main.fa66f095.js.map": "/portfolio/static/js/main.fa66f095.js.map"
+    "main.ddad360b.js.map": "/portfolio/static/js/main.ddad360b.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.fa66f095.js"
+    "static/js/main.ddad360b.js"
   ]
 }
