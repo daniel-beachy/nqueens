@@ -1,6 +1,6 @@
 {
-  "homepage": "http://daniel-beachy.github.io/portfolio",
-  "name": "portfolio",
+  "homepage": "http://daniel-beachy.github.io/nqueens",
+  "name": "nqueens",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
