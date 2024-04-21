@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import BoardAnimation from "./BoardAnimation";
-import slow from "./img/slow.png";
-import normal from "./img/normal.png";
-import fast from "./img/fast.png";
+import snail from "./img/snail.png";
+import rabbit from "./img/rabbit.png";
+import rocket from "./img/rocket.png";
 import nQueensAlgo from "./nQueensAlgo";
 import {
   Button,
@@ -22,19 +22,22 @@ const NQueens = () => {
   const boardSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
     if (!newSize || (newSize >= 1 && newSize <= 20)) {
-      setBoardSize(newSize);
+      if (newSize === NaN) {
+        setBoardSize(undefined);
+      } else {
+        setBoardSize(newSize);
+      }
     }
     clear();
   };
 
   const solveNQueens = () => {
-    const positions = nQueensAlgo(boardSize);
-    setSolution(positions);
+    setSolution(nQueensAlgo(boardSize));
     setShowAnimationTime(true);
   };
 
   const clear = () => {
-    setSolution([""]);
+    setSolution([[]]);
     setShowAnimationTime(false);
   };
 
@@ -58,8 +61,8 @@ const NQueens = () => {
 
   return (
     <Container fluid className="d-flex flex-column vh-100">
-      <Row className="justify-content-center p-2 bg-dark">
-        <Col md="auto">
+      <Row className="justify-content-center bg-dark">
+        <Col xs={12} sm="auto" className="p-2 justify-content-center d-flex">
           <ButtonGroup>
             {["slow", "normal", "fast"].map((speed) => (
               <Button
@@ -68,34 +71,34 @@ const NQueens = () => {
                 onClick={() => setAnimationSpeed(speed)}
               >
                 {speed === "slow" && (
-                  <img src={slow} style={{ maxHeight: "25px" }} alt={speed} />
+                  <img src={snail} style={{ maxHeight: "25px" }} alt={speed} />
                 )}
                 {speed === "normal" && (
-                  <img src={normal} style={{ maxHeight: "25px" }} alt={speed} />
+                  <img src={rabbit} style={{ maxHeight: "25px" }} alt={speed} />
                 )}
                 {speed === "fast" && (
-                  <img src={fast} style={{ maxHeight: "25px" }} alt={speed} />
+                  <img src={rocket} style={{ maxHeight: "25px" }} alt={speed} />
                 )}
               </Button>
             ))}
           </ButtonGroup>
         </Col>
-        <Col md="auto">
+        <Col xs="auto" className="p-2 justify-content-end d-flex">
           <FormControl
             type="number"
             style={{ width: "80px" }}
             className="bg-input"
-            placeholder="Board Size"
+            placeholder="N"
             value={boardSize}
             onChange={boardSizeChange}
           />
         </Col>
-        <Col md="auto">
+        <Col xs="auto" className="p-2 justify-content-center d-flex">
           <Button variant="primary" onClick={solveNQueens}>
             Solve
           </Button>
         </Col>
-        <Col md="auto">
+        <Col xs="auto" className="p-2 justify-content-start d-flex">
           <Button variant="danger" onClick={clear}>
             Clear
           </Button>

@@ -12,7 +12,7 @@ const Board = ({ boardSize, queens }) => {
       const screenSize = Math.min(screenWidth, screenHeight);
       const minCellWidth = 30;
       const maxCellWidth = 100;
-      const calculatedCellSize = screenSize / (boardSize + 2);
+      const calculatedCellSize = (screenSize * 0.88) / boardSize;
 
       const newCellSize = Math.max(
         minCellWidth,
@@ -41,7 +41,7 @@ const Board = ({ boardSize, queens }) => {
           lineHeight: `${cellSize}px`,
         }}
       >
-        {Number(queens[row]) === col ? (
+        {queens.length > row && queens[row] === col ? (
           <img src={queenImage} className="img-fluid" alt="Queen" />
         ) : null}
       </Col>
