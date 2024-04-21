@@ -1,62 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import queenImage from "./img/queen-black.png";
+import { Row, Col } from "react-bootstrap";
 
 const Board = ({ boardSize, queens }) => {
-  const styles = {
-    width: `${boardSize * 75}px`,
-    height: `${boardSize * 75}px`,
-    display: "flex",
-    flexDirection: "column",
-  };
+  const [cellSize, setCellSize] = useState(100);
 
-  const cellStyles = {
-    width: "75px",
-    height: "75px",
-    textAlign: "center",
-    lineHeight: "75px",
-    fontSize: "60px",
-  };
+  useEffect(() => {
+    const calculateCellSize = () => {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      const screenSize = Math.min(screenWidth, screenHeight);
+      const minCellWidth = 30;
+      const maxCellWidth = 100;
+      const calculatedCellSize = screenSize / (boardSize + 2);
 
-  const queenStyle = {
-    maxWidth: "90%",
-    maxHeight: "90%",
-    alignSelf: "center",
-  };
+      const newCellSize = Math.max(
+        minCellWidth,
+        Math.min(maxCellWidth, calculatedCellSize)
+      );
+      setCellSize(newCellSize);
+    };
+
+    calculateCellSize();
+    window.addEventListener("resize", calculateCellSize);
+
+    return () => {
+      window.removeEventListener("resize", calculateCellSize);
+    };
+  }, [boardSize]);
 
   const renderCell = (row, col) => {
-    const isBlack = (row + col) % 2 === 1;
-    const backgroundColor = isBlack ? "#4b7399" : "#eae9d2";
-    let className = "cell";
-    let content = "";
-    if (Number(queens[row]) === col) {
-      content = <img src={queenImage} alt="Queen" style={queenStyle} />;
-      className += " queen-cell";
-    }
+    const background = (row + col) % 2 === 1 ? "bg-dark-cell" : "bg-light-cell";
     return (
-      <div
+      <Col
         key={`${row}-${col}`}
-        className={className}
-        style={{ ...cellStyles, backgroundColor }}
+        className={`${background} px-0`}
+        style={{
+          width: `${cellSize}px`,
+          height: `${cellSize}px`,
+          lineHeight: `${cellSize}px`,
+        }}
       >
-        {content}
-      </div>
+        {Number(queens[row]) === col ? (
+          <img src={queenImage} className="img-fluid" alt="Queen" />
+        ) : null}
+      </Col>
     );
   };
 
-  const board = [];
+  const boardRows = [];
   for (let row = 0; row < boardSize; row++) {
     const rowCells = [];
     for (let col = 0; col < boardSize; col++) {
       rowCells.push(renderCell(row, col));
     }
-    board.push(
-      <div key={`row-${row}`} style={{ display: "flex" }}>
-        {rowCells}
-      </div>
-    );
+    boardRows.push(<Row key={`row-${row}`}>{rowCells}</Row>);
   }
 
-  return <div style={styles}>{board}</div>;
+  return (
+    <div
+      style={{
+        width: `${boardSize * cellSize}px`,
+        height: `${boardSize * cellSize}px`,
+      }}
+    >
+      {boardRows}
+    </div>
+  );
 };
 
 export default Board;

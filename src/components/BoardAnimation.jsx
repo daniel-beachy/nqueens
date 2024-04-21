@@ -4,7 +4,6 @@ import Board from "./Board";
 const BoardAnimation = ({ boardSize, queenPositions, waitTime }) => {
   const [currentPosition, setCurrentPosition] = useState("");
   useEffect(() => {
-    console.log(queenPositions);
     if (queenPositions.length === 0) {
       setCurrentPosition("");
       return;

@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import BoardAnimation from "./BoardAnimation";
+import slow from "./img/slow.png";
+import normal from "./img/normal.png";
+import fast from "./img/fast.png";
 import nQueensAlgo from "./nQueensAlgo";
+import {
+  Button,
+  ButtonGroup,
+  FormControl,
+  Row,
+  Col,
+  Container,
+} from "react-bootstrap";
 
 const NQueens = () => {
   const [boardSize, setBoardSize] = useState(5);
@@ -8,9 +19,11 @@ const NQueens = () => {
   const [animationSpeed, setAnimationSpeed] = useState("normal");
   const [showAnimationTime, setShowAnimationTime] = useState(false);
 
-  const handleChange = (event) => {
+  const boardSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
-    setBoardSize(newSize);
+    if (!newSize || (newSize >= 1 && newSize <= 20)) {
+      setBoardSize(newSize);
+    }
     clear();
   };
 
@@ -25,10 +38,6 @@ const NQueens = () => {
     setShowAnimationTime(false);
   };
 
-  const handleSpeedChange = (event) => {
-    setAnimationSpeed(event.target.value);
-  };
-
   const getWaitTime = () => {
     switch (animationSpeed) {
       case "slow":
@@ -38,111 +47,74 @@ const NQueens = () => {
       case "fast":
         return 25;
       default:
-        return 100; // Default to normal speed
+        return 100;
     }
   };
 
   const calculateAnimationTime = () => {
     const waitTime = getWaitTime();
-    return (solution.length * waitTime) / 1000;
-  };
-
-  const styles = {
-    container: {
-      backgroundColor: "#071108",
-      height: "100vh",
-      display: "flex",
-      flexDirection: "column",
-    },
-    header: {
-      display: "flex",
-      justifyContent: "center", // Center elements horizontally
-      alignItems: "center",
-      padding: 10,
-      backgroundColor: "#6B5E62",
-    },
-    input: {
-      width: 75,
-      padding: "5px",
-      border: "1px solid #ccc",
-      borderRadius: "3px",
-      marginRight: 20, // Add margin for spacing
-    },
-    button: {
-      color: "white",
-      padding: "10px 20px",
-      border: "none",
-      borderRadius: "3px",
-      cursor: "pointer",
-      marginRight: 10,
-    },
-    boardContainer: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 25,
-    },
-    dropdown: {
-      backgroundColor: "#C9C9EE",
-      border: "1px solid #ccc",
-      borderRadius: "4px",
-      padding: "5px 10px",
-      fontSize: "12px",
-      cursor: "pointer",
-      marginRight: 10,
-      appearance: "none",
-    },
-    animationTimeText: {
-      color: "white",
-      marginTop: 10,
-    },
+    return ((solution.length * waitTime) / 1000).toFixed(1);
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.header}>
-        <select
-          value={animationSpeed}
-          onChange={handleSpeedChange}
-          style={styles.dropdown}
-        >
-          <option value="slow">Slow</option>
-          <option value="normal">Normal</option>
-          <option value="fast">Fast</option>
-        </select>
-        <input
-          onChange={handleChange}
-          placeholder="Board Size"
-          style={styles.input}
-        />
-        <button
-          onClick={solveNQueens}
-          style={{ ...styles.button, backgroundColor: "#3f51b5" }}
-        >
-          Solve
-        </button>
-        <button
-          onClick={clear}
-          style={{ ...styles.button, backgroundColor: "#ff4242" }}
-        >
-          Clear
-        </button>
-      </div>
-      <div style={styles.boardContainer}>
+    <Container fluid className="d-flex flex-column vh-100">
+      <Row className="justify-content-center p-2 bg-dark">
+        <Col md="auto">
+          <ButtonGroup>
+            {["slow", "normal", "fast"].map((speed) => (
+              <Button
+                key={speed}
+                variant={animationSpeed === speed ? "input" : "primary"}
+                onClick={() => setAnimationSpeed(speed)}
+              >
+                {speed === "slow" && (
+                  <img src={slow} style={{ maxHeight: "25px" }} alt={speed} />
+                )}
+                {speed === "normal" && (
+                  <img src={normal} style={{ maxHeight: "25px" }} alt={speed} />
+                )}
+                {speed === "fast" && (
+                  <img src={fast} style={{ maxHeight: "25px" }} alt={speed} />
+                )}
+              </Button>
+            ))}
+          </ButtonGroup>
+        </Col>
+        <Col md="auto">
+          <FormControl
+            type="number"
+            style={{ width: "80px" }}
+            className="bg-input"
+            placeholder="Board Size"
+            value={boardSize}
+            onChange={boardSizeChange}
+          />
+        </Col>
+        <Col md="auto">
+          <Button variant="primary" onClick={solveNQueens}>
+            Solve
+          </Button>
+        </Col>
+        <Col md="auto">
+          <Button variant="danger" onClick={clear}>
+            Clear
+          </Button>
+        </Col>
+      </Row>
+      <Row className="justify-content-center p-3 bg-secondary">
         <BoardAnimation
           boardSize={boardSize}
           queenPositions={solution}
           waitTime={getWaitTime()}
-          style={{ justifyContent: "center" }}
         />
-        {showAnimationTime && (
-          <p style={styles.animationTimeText}>
-            Animation time: {calculateAnimationTime()} seconds
+        {showAnimationTime && boardSize !== 0 && (
+          <p className="text-center text-light-cell">
+            animation time: {calculateAnimationTime()} seconds
           </p>
         )}
-      </div>
-    </div>
+      </Row>
+      <Row className="flex-grow-1 bg-secondary"></Row>
+    </Container>
   );
 };
 
