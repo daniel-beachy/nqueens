@@ -67,7 +67,7 @@ const NQueens = () => {
             {["slow", "normal", "fast"].map((speed) => (
               <Button
                 key={speed}
-                variant={animationSpeed === speed ? "input" : "primary"}
+                variant={animationSpeed === speed ? "light-blue" : "primary"}
                 onClick={() => setAnimationSpeed(speed)}
               >
                 {speed === "slow" && (
@@ -87,7 +87,7 @@ const NQueens = () => {
           <FormControl
             type="number"
             style={{ width: "80px" }}
-            className="bg-input"
+            className="bg-light-blue"
             placeholder="N"
             value={boardSize}
             onChange={boardSizeChange}
