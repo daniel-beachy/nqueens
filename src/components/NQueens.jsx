@@ -3,6 +3,7 @@ import BoardAnimation from "./BoardAnimation";
 import snail from "./img/snail.png";
 import rabbit from "./img/rabbit.png";
 import rocket from "./img/rocket.png";
+import homeIcon from "./img/home.png";
 import nQueensAlgo from "./nQueensAlgo";
 import {
   Button,
@@ -61,6 +62,13 @@ const NQueens = () => {
 
   return (
     <Container fluid className="d-flex flex-column vh-100">
+      <Row className="position-relative bg-dark">
+        <Col className="pt-3 d-flex align-items-center position-absolute">
+          <a href="http://daniel-beachy.github.io">
+            <img style={{ maxHeight: "25px" }} src={homeIcon} alt="Home" />
+          </a>
+        </Col>
+      </Row>
       <Row className="justify-content-center bg-dark">
         <Col xs={12} sm="auto" className="p-2 justify-content-center d-flex">
           <ButtonGroup>
