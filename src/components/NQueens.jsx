@@ -62,55 +62,81 @@ const NQueens = () => {
 
   return (
     <Container fluid className="d-flex flex-column vh-100">
-      <a
-        href="http://daniel-beachy.github.io"
-        className="pt-3 d-flex align-items-center position-absolute"
-      >
-        <img style={{ maxHeight: "25px" }} src={homeIcon} alt="Home" />
-      </a>
-      <Row className="justify-content-center bg-dark">
-        <Col xs={12} sm="auto" className="p-2 justify-content-center d-flex">
-          <ButtonGroup>
-            {["slow", "normal", "fast"].map((speed) => (
-              <Button
-                key={speed}
-                variant={animationSpeed === speed ? "light-blue" : "primary"}
-                onClick={() => setAnimationSpeed(speed)}
-              >
-                {speed === "slow" && (
-                  <img src={snail} style={{ maxHeight: "25px" }} alt={speed} />
-                )}
-                {speed === "normal" && (
-                  <img src={rabbit} style={{ maxHeight: "25px" }} alt={speed} />
-                )}
-                {speed === "fast" && (
-                  <img src={rocket} style={{ maxHeight: "25px" }} alt={speed} />
-                )}
+      <Row className="bg-dark">
+        <Col xs={1}>
+          <a
+            href="http://daniel-beachy.github.io"
+            className="pt-3 d-flex align-items-center position-absolute"
+          >
+            <img style={{ maxHeight: "25px" }} src={homeIcon} alt="Home" />
+          </a>
+        </Col>
+        <Col xs={10}>
+          <Row className="justify-content-center">
+            <Col xs="auto" className="p-2 justify-content-center d-flex">
+              <Button variant="secondary" onClick={clear}>
+                Clear
               </Button>
-            ))}
-          </ButtonGroup>
+            </Col>
+            <Col xs="auto" className="p-2 justify-content-center d-flex">
+              <FormControl
+                type="number"
+                style={{ width: "80px", height: "38px" }}
+                className="bg-light-blue"
+                placeholder="N"
+                value={boardSize}
+                onChange={boardSizeChange}
+              />
+            </Col>
+            <Col xs="auto" className="p-2 justify-content-center d-flex">
+              <Button variant="primary" onClick={solveNQueens}>
+                Solve
+              </Button>
+            </Col>
+            <Col
+              xs={12}
+              sm="auto"
+              className="p-2 justify-content-center d-flex"
+            >
+              <ButtonGroup>
+                {["slow", "normal", "fast"].map((speed) => (
+                  <Button
+                    key={speed}
+                    variant={
+                      animationSpeed === speed ? "light-blue" : "primary"
+                    }
+                    onClick={() => setAnimationSpeed(speed)}
+                  >
+                    {speed === "slow" && (
+                      <img
+                        src={snail}
+                        style={{ maxHeight: "25px" }}
+                        alt={speed}
+                      />
+                    )}
+                    {speed === "normal" && (
+                      <img
+                        src={rabbit}
+                        style={{ maxHeight: "25px" }}
+                        alt={speed}
+                      />
+                    )}
+                    {speed === "fast" && (
+                      <img
+                        src={rocket}
+                        style={{ maxHeight: "25px" }}
+                        alt={speed}
+                      />
+                    )}
+                  </Button>
+                ))}
+              </ButtonGroup>
+            </Col>
+          </Row>
         </Col>
-        <Col xs="auto" className="p-2 justify-content-end d-flex">
-          <FormControl
-            type="number"
-            style={{ width: "80px" }}
-            className="bg-light-blue"
-            placeholder="N"
-            value={boardSize}
-            onChange={boardSizeChange}
-          />
-        </Col>
-        <Col xs="auto" className="p-2 justify-content-center d-flex">
-          <Button variant="primary" onClick={solveNQueens}>
-            Solve
-          </Button>
-        </Col>
-        <Col xs="auto" className="p-2 justify-content-start d-flex">
-          <Button variant="danger" onClick={clear}>
-            Clear
-          </Button>
-        </Col>
+        <Col xs={1}></Col>
       </Row>
+
       <Row className="justify-content-center p-3 bg-secondary">
         <BoardAnimation
           boardSize={boardSize}
