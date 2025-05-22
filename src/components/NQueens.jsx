@@ -5,6 +5,7 @@ import rabbit from "./img/rabbit.png";
 import rocket from "./img/rocket.png";
 import homeIcon from "./img/home.png";
 import nQueensAlgo from "./nQueensAlgo";
+import nQueensGeneticAlgo from "./nQueensGeneticAlgo";
 import {
   Button,
   ButtonGroup,
@@ -19,6 +20,7 @@ const NQueens = () => {
   const [solution, setSolution] = useState([""]);
   const [animationSpeed, setAnimationSpeed] = useState("normal");
   const [showAnimationTime, setShowAnimationTime] = useState(false);
+  const [selectedAlgorithm, setSelectedAlgorithm] = useState("backtracking");
 
   const boardSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
@@ -33,7 +35,11 @@ const NQueens = () => {
   };
 
   const solveNQueens = () => {
-    setSolution(nQueensAlgo(boardSize));
+    if (selectedAlgorithm === "backtracking") {
+      setSolution(nQueensAlgo(boardSize));
+    } else {
+      setSolution(nQueensGeneticAlgo(boardSize));
+    }
     setShowAnimationTime(true);
   };
 
@@ -130,6 +136,26 @@ const NQueens = () => {
                     )}
                   </Button>
                 ))}
+              </ButtonGroup>
+            </Col>
+            <Col
+              xs={12}
+              sm="auto"
+              className="p-2 justify-content-center d-flex"
+            >
+              <ButtonGroup>
+                <Button
+                  variant={selectedAlgorithm === "backtracking" ? "light-blue" : "primary"}
+                  onClick={() => setSelectedAlgorithm("backtracking")}
+                >
+                  Backtracking
+                </Button>
+                <Button
+                  variant={selectedAlgorithm === "genetic" ? "light-blue" : "primary"}
+                  onClick={() => setSelectedAlgorithm("genetic")}
+                >
+                  Genetic
+                </Button>
               </ButtonGroup>
             </Col>
           </Row>
