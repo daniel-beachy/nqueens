@@ -3,6 +3,16 @@
 
 // Moves will store all states for visualization
 let moves = [[]];
+// Track the current generation
+let currentGeneration = 0;
+
+/**
+ * Get the current generation number
+ * @returns {number} - Current generation
+ */
+export function getCurrentGeneration() {
+  return currentGeneration;
+}
 
 /**
  * Main function to solve N-Queens problem using genetic algorithm
@@ -20,37 +30,62 @@ function nQueensGeneticAlgo(
   selectionRate = 0.5,
   mutationRate = 0.1
 ) {
-  // Reset moves array
+  // Reset moves array and generation counter
   moves = [[]];
+  currentGeneration = 0;
   
   // Generate initial population
   let population = generateInitialPopulation(n, populationSize);
   
   // Main loop
   for (let generation = 0; generation < maxGenerations; generation++) {
+    // Update current generation
+    currentGeneration = generation + 1;
+    
     // Evaluate fitness
     const fitnessScores = population.map(solution => calculateFitness(solution));
     
-    // Find best solution
-    const bestIndex = fitnessScores.indexOf(Math.max(...fitnessScores));
+    // Sort population by fitness for visualization and selection
+    const sortedIndices = Array.from({ length: population.length }, (_, i) => i)
+      .sort((a, b) => fitnessScores[b] - fitnessScores[a]);
+    
+    // Find best solution for this generation
+    const bestIndex = sortedIndices[0];
     const bestSolution = population[bestIndex];
+    const bestFitness = fitnessScores[bestIndex];
     
     // Record move for visualization
     moves.push([...bestSolution]);
     
     // Check if we found a solution
-    if (fitnessScores[bestIndex] === getMaxFitness(n)) {
+    if (bestFitness === getMaxFitness(n)) {
+      // If found, record the solution a few more times to make it visible in the animation
+      for (let i = 0; i < 10; i++) {
+        moves.push([...bestSolution]);
+      }
       return moves;
     }
     
-    // Selection
-    const selectedParents = selectParents(population, fitnessScores, selectionRate);
+    // Selection - get the top solutions based on fitness
+    const selectedParents = sortedIndices
+      .slice(0, Math.max(2, Math.floor(populationSize * selectionRate)))
+      .map(index => population[index]);
     
     // Create new generation through crossover and mutation
     population = breed(selectedParents, populationSize, n, mutationRate);
   }
   
-  // Return the moves even if no solution was found
+  // If we get here, we've reached max generations without finding a solution
+  // Return the best solution we found in the last generation
+  const lastFitnessScores = population.map(solution => calculateFitness(solution));
+  const lastBestIndex = lastFitnessScores.indexOf(Math.max(...lastFitnessScores));
+  const lastBestSolution = population[lastBestIndex];
+  
+  // Add the final best solution a few more times to make it visible
+  for (let i = 0; i < 10; i++) {
+    moves.push([...lastBestSolution]);
+  }
+  
   return moves;
 }
 
@@ -116,7 +151,7 @@ function getMaxFitness(n) {
 }
 
 /**
- * Select parents for breeding based on fitness
+ * Select parents for breeding based on fitness - Not used directly anymore
  * @param {Array} population - Current population
  * @param {Array} fitnessScores - Fitness scores for population
  * @param {number} selectionRate - Percentage of top solutions to keep

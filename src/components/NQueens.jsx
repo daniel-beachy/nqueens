@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BoardAnimation from "./BoardAnimation";
 import snail from "./img/snail.png";
 import rabbit from "./img/rabbit.png";
 import rocket from "./img/rocket.png";
 import homeIcon from "./img/home.png";
 import nQueensAlgo from "./nQueensAlgo";
-import nQueensGeneticAlgo from "./nQueensGeneticAlgo";
+import nQueensGeneticAlgo, { getCurrentGeneration } from "./nQueensGeneticAlgo";
 import {
   Button,
   ButtonGroup,
@@ -21,11 +21,25 @@ const NQueens = () => {
   const [animationSpeed, setAnimationSpeed] = useState("normal");
   const [showAnimationTime, setShowAnimationTime] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("backtracking");
+  const [generationCount, setGenerationCount] = useState(0);
+  
+  // Update generation count if using genetic algorithm
+  useEffect(() => {
+    if (selectedAlgorithm === "genetic" && solution.length > 1) {
+      const interval = setInterval(() => {
+        setGenerationCount(getCurrentGeneration());
+      }, 100);
+      
+      return () => clearInterval(interval);
+    } else {
+      setGenerationCount(0);
+    }
+  }, [selectedAlgorithm, solution]);
 
   const boardSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
     if (!newSize || (newSize >= 1 && newSize <= 20)) {
-      if (newSize === NaN) {
+      if (isNaN(newSize)) {
         setBoardSize(undefined);
       } else {
         setBoardSize(newSize);
@@ -38,7 +52,13 @@ const NQueens = () => {
     if (selectedAlgorithm === "backtracking") {
       setSolution(nQueensAlgo(boardSize));
     } else {
-      setSolution(nQueensGeneticAlgo(boardSize));
+      // For genetic algorithm, use parameters appropriate for visualization
+      // Smaller population and fewer generations to keep visualization reasonable
+      const populationSize = 30;
+      const maxGenerations = 200;
+      const selectionRate = 0.3;
+      const mutationRate = 0.2;
+      setSolution(nQueensGeneticAlgo(boardSize, populationSize, maxGenerations, selectionRate, mutationRate));
     }
     setShowAnimationTime(true);
   };
@@ -46,6 +66,7 @@ const NQueens = () => {
   const clear = () => {
     setSolution([[]]);
     setShowAnimationTime(false);
+    setGenerationCount(0);
   };
 
   const getWaitTime = () => {
@@ -172,6 +193,9 @@ const NQueens = () => {
         {showAnimationTime && boardSize !== 0 && (
           <p className="text-center text-light-cell">
             animation time: {calculateAnimationTime()} seconds
+            {selectedAlgorithm === "genetic" && generationCount > 0 && (
+              <span> | Generation: {generationCount}</span>
+            )}
           </p>
         )}
       </Row>
