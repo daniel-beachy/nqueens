@@ -51,11 +51,14 @@ function nQueensGeneticAlgo(
     
     // Find best solution for this generation
     const bestIndex = sortedIndices[0];
-    const bestSolution = population[bestIndex];
+    const bestSolution = [];
+    for (let i = 0; i < population[bestIndex].length; i++) {
+      bestSolution.push(population[bestIndex][i]);
+    }
     const bestFitness = fitnessScores[bestIndex];
     
     // Record move for visualization
-    moves.push([...bestSolution]);
+    moves.push(bestSolution);
     
     // Check if we found a solution
     if (bestFitness === getMaxFitness(n)) {
@@ -67,9 +70,17 @@ function nQueensGeneticAlgo(
     }
     
     // Selection - get the top solutions based on fitness
-    const selectedParents = sortedIndices
-      .slice(0, Math.max(2, Math.floor(populationSize * selectionRate)))
-      .map(index => population[index]);
+    const topIndices = sortedIndices.slice(0, Math.max(2, Math.floor(populationSize * selectionRate)));
+    const selectedParents = [];
+    
+    // Copy the selected solutions safely
+    for (let i = 0; i < topIndices.length; i++) {
+      const parent = [];
+      for (let j = 0; j < population[topIndices[i]].length; j++) {
+        parent.push(population[topIndices[i]][j]);
+      }
+      selectedParents.push(parent);
+    }
     
     // Create new generation through crossover and mutation
     population = breed(selectedParents, populationSize, n, mutationRate);
@@ -148,28 +159,6 @@ function calculateFitness(solution) {
 function getMaxFitness(n) {
   // Maximum fitness is the number of possible pairs of queens
   return (n * (n - 1)) / 2;
-}
-
-/**
- * Select parents for breeding based on fitness - Not used directly anymore
- * @param {Array} population - Current population
- * @param {Array} fitnessScores - Fitness scores for population
- * @param {number} selectionRate - Percentage of top solutions to keep
- * @returns {Array} selectedParents - Selected parents for breeding
- */
-function selectParents(population, fitnessScores, selectionRate) {
-  // Create indices array
-  const indices = Array.from({ length: population.length }, (_, i) => i);
-  
-  // Sort indices by fitness (descending)
-  indices.sort((a, b) => fitnessScores[b] - fitnessScores[a]);
-  
-  // Select top percentage
-  const numToSelect = Math.max(2, Math.floor(population.length * selectionRate));
-  const selectedIndices = indices.slice(0, numToSelect);
-  
-  // Return selected parents
-  return selectedIndices.map(index => population[index]);
 }
 
 /**
