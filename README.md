@@ -2,7 +2,7 @@
 
 A React application for visualizing solutions to the classic N-Queens problem with an animated backtracking algorithm.
 
-![N-Queens Screenshot](https://user-images.githubusercontent.com/your-username/nqueens/main/screenshot.png)
+**Live demo:** [daniel-beachy.github.io/nqueens](https://daniel-beachy.github.io/nqueens)
 
 ## What is the N-Queens Problem?
 
@@ -34,15 +34,19 @@ The N-Queens puzzle is the problem of placing N chess queens on an N×N chessboa
 
 This application uses a backtracking algorithm to find a solution to the N-Queens problem:
 
-1. Start in the leftmost column
+1. Start in the top row
 2. If all queens are placed, return the solution
-3. Try all rows in the current column
-4. For each row:
-   - If the queen can be placed safely, mark this position
-   - Recursively try to place the rest of the queens
+3. Try each column in the current row
+4. For each column:
+   - Record the attempt so it can be animated
+   - If the square is not attacked, place a queen and recursively try the next row
    - If that leads to a solution, return the solution
-   - If not, backtrack and try other rows
-5. If no row works, return false (no solution exists)
+   - If not, backtrack and try the next column
+5. If no column works, return an empty board (no solution exists)
+
+Attacked squares are detected in constant time by keeping three `Set`s of
+occupied columns, positive diagonals (`row + col`) and negative diagonals
+(`row - col`).
 
 ## Installation and Setup
 
@@ -76,21 +80,15 @@ This creates an optimized production build in the `build` folder.
 
 ## Deployment
 
-This project is configured for GitHub Pages deployment:
-
-```bash
-npm run deploy
-```
+Deployment is automatic. Every push to `main` triggers
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the
+app and publishes it to GitHub Pages. No manual step is required.
 
 ## Technologies Used
 
 - React
 - React Bootstrap
-- SCSS for styling
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- SCSS (dart-sass)
 
 ## Credits
 
