@@ -65,7 +65,7 @@ const NQueens = () => {
       <Row className="bg-dark">
         <Col xs={1}>
           <a
-            href="http://daniel-beachy.github.io"
+            href="https://daniel-beachy.github.io"
             className="pt-3 d-flex align-items-center position-absolute"
           >
             <img style={{ maxHeight: "25px" }} src={homeIcon} alt="Home" />
