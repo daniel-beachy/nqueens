@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# N-Queens Visualization
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React application for visualizing solutions to the classic N-Queens problem with an animated backtracking algorithm.
 
-## Available Scripts
+**Live demo:** [daniel-beachy.github.io/nqueens](https://daniel-beachy.github.io/nqueens)
 
-In the project directory, you can run:
+## What is the N-Queens Problem?
 
-### `npm start`
+The N-Queens puzzle is the problem of placing N chess queens on an N×N chessboard so that no two queens threaten each other. Thus, a solution requires that no two queens share the same row, column, or diagonal.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Interactive chessboard visualization
+- Backtracking algorithm visualization
+- Adjustable board size (1-20)
+- Three animation speed options:
+  - Slow (snail)
+  - Normal (rabbit)
+  - Fast (rocket)
+- Estimated animation time display
+- Responsive design that works on various screen sizes
 
-### `npm test`
+## How to Use
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Set the board size by entering a number between 1-20 in the input field.
+2. Select your preferred animation speed using the animal icons:
+   - 🐌 Slow: Good for understanding each step
+   - 🐇 Normal: Balanced speed
+   - 🚀 Fast: Quick visualization
+3. Click "Solve" to start the algorithm visualization.
+4. Click "Clear" to reset the board and try again.
 
-### `npm run build`
+## Algorithm
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+This application uses a backtracking algorithm to find a solution to the N-Queens problem:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Start in the top row
+2. If all queens are placed, return the solution
+3. Try each column in the current row
+4. For each column:
+   - Record the attempt so it can be animated
+   - If the square is not attacked, place a queen and recursively try the next row
+   - If that leads to a solution, return the solution
+   - If not, backtrack and try the next column
+5. If no column works, return an empty board (no solution exists)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Attacked squares are detected in constant time by keeping three `Set`s of
+occupied columns, positive diagonals (`row + col`) and negative diagonals
+(`row - col`).
 
-### `npm run eject`
+## Installation and Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Node.js and npm
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Clone the repository
+git clone https://github.com/daniel-beachy/nqueens.git
+cd nqueens
 
-## Learn More
+# Install dependencies
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Start the development server
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The application will be available at [http://localhost:3000](http://localhost:3000)
 
-### Code Splitting
+### Building for Production
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run build
+```
 
-### Analyzing the Bundle Size
+This creates an optimized production build in the `build` folder.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Deployment
 
-### Making a Progressive Web App
+Deployment is automatic. Every push to `main` triggers
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the
+app and publishes it to GitHub Pages. No manual step is required.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Technologies Used
 
-### Advanced Configuration
+- React
+- React Bootstrap
+- SCSS (dart-sass)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Credits
 
-### Deployment
+Created by Daniel Beachy.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+*This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).*
