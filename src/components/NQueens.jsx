@@ -23,7 +23,7 @@ const NQueens = () => {
   const boardSizeChange = (event) => {
     const newSize = parseInt(event.target.value);
     if (!newSize || (newSize >= 1 && newSize <= 20)) {
-      if (newSize === NaN) {
+      if (isNaN(newSize)) {
         setBoardSize(undefined);
       } else {
         setBoardSize(newSize);
