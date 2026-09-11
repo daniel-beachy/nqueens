@@ -67,8 +67,10 @@ const NQueens = () => {
           <a
             href="https://daniel-beachy.github.io"
             className="pt-3 d-flex align-items-center position-absolute"
+            aria-label="Back to portfolio"
+            title="Portfolio"
           >
-            <img style={{ maxHeight: "25px" }} src={homeIcon} alt="Home" />
+            <img style={{ maxHeight: "25px" }} src={homeIcon} alt="" />
           </a>
         </Col>
         <Col xs={10}>
